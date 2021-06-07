@@ -5,12 +5,12 @@ const searchInput = document.getElementById('search-input');
 const searchSubmit = document.getElementById('search-submit');
 let displayedEmployees = [];
 let searchArray = [];
+let employeeData;
 
 modalContainer.style.display = 'none';
-function generateCard (data) {
+function generateCards (data) {
     data.results.map( person => {
         const card = document.createElement('div');
-        
         gallery.appendChild(card);
         card.insertAdjacentHTML('beforeend', `
             <div class="card">
@@ -30,6 +30,7 @@ function generateCard (data) {
         displayedEmployees.push(card);
     });
 }
+
 function generateModal (person) {
     const modal = document.createElement('div');
     modalContainer.style.display = 'block';
@@ -59,19 +60,30 @@ function generateModal (person) {
         modal.remove();
     });
 }
+
 fetch('https://randomuser.me/api/?results=12&nat=US')
     .then(response => response.json())
     .then(data => { return data
     })
-    .then(generateCard)
-
-
+    .then(generateCards)
 
 function search () {
+    searchArray = [];
     for (let i=0; i<displayedEmployees.length; i++) {
         if (searchInput.value.length !== 0 && displayedEmployees[i].children[0].childNodes[2].nextElementSibling.childNodes[1].textContent.toLowerCase().includes(searchInput.value.toLowerCase())) {
             searchArray.push(displayedEmployees[i]);
         }
+    }
+    if (searchArray.length > 0) {
+        while (gallery.firstChild) {
+            gallery.removeChild(gallery.firstChild)
+        }
+    } 
+    else {
+        searchArray = displayedEmployees;
+    }
+    for (let i=0; i<searchArray.length; i++) {
+        gallery.appendChild(searchArray[i]);
     }
 }
 searchInput.addEventListener('keyup', () => {
