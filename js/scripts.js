@@ -8,8 +8,10 @@ let employeeCards = [];
 let employeeModals = [];
 let searchArray = [];
 let modalClick;
+//let currentModalId = null;
 
 modalContainer.style.display = 'none';
+searchSubmit.style.display = 'none';
 function generateCardsModals (data) {
     data.results.map( (person, index) => {
         const card = document.createElement('div');
@@ -26,8 +28,8 @@ function generateCardsModals (data) {
             </div>
         `);
         card.addEventListener('click', (e) => {
-            modalClick = e.target
-            displayModal(modalClick);
+            cardClick = e.target;
+            clickModal(cardClick);
         });
         employeeCards.push(card);
     });
@@ -42,7 +44,7 @@ function generateCardsModals (data) {
             //<div class="modal">
             //<button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
             //<div class="modal-info-container" id=${index}>
-                `<img class="modal-img" src="${person.picture.large}" alt="profile picture">
+                `<img class="modal-img" src="${person.picture.large}" id="${index}" alt="profile picture">
                 <h3 id="name" class="modal-name cap">${person.name.first} ${person.name.last}</h3>
                 <p class="modal-text">${person.email}</p>
                 <p class="modal-text cap">${person.location.city}</p>
@@ -65,11 +67,15 @@ function displayCards (arr) {
     }
 }
 
-function displayModal (card) {
+function clickModal (click) {
+    ModalId = click.closest('.card').id;
+    displayModal(ModalId);
+}
+
+function displayModal (click) {
     const modalCloseBtn = document.getElementById('modal-close-btn');
-    id = card.closest('.card').id;
     modalContainer.style.display = 'block';
-    modalInfoContainer.innerHTML = `${employeeModals[id]}`
+    modalInfoContainer.innerHTML = `${employeeModals[click]}`
     modalCloseBtn.addEventListener('click', closeModal);
 }
 
@@ -117,15 +123,30 @@ searchInput.addEventListener('keyup', () => {
     search();
     noSearchResults(searchArray);
 })
+searchSubmit.addEventListener('click', (e) => {
+    search(e);
+    noSearchResults(searchArray);
+});
 
 const modalPrev = document.getElementById('modal-prev');
 const modalNext = document.getElementById('modal-next');
-let modalClickDiv
-let previousDiv;
 
+modalPrev.addEventListener('click', () => {
+    const currentModalImage = modalInfoContainer.querySelector('img');
+    currentModalId = parseInt(currentModalImage.id);
+    if (currentModalId === 0) {
+        displayModal(employeeCards.length - 1)
+    } else {
+        displayModal(currentModalId-1)
+    }
+})
 
-/* modalPrev.addEventListener('click', () => {
-    
-    previousDiv = modalClickDiv.parentElement.previousElementSibling;
-    generateModal(previousDiv);
-}) */
+modalNext.addEventListener('click', () => {
+    const currentModalImage = modalInfoContainer.querySelector('img');
+    currentModalId = parseInt(currentModalImage.id);
+    if (currentModalId === employeeCards.length - 1) {
+        displayModal(0)
+    } else {
+        displayModal(currentModalId+1)
+    }
+})
