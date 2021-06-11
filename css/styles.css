@@ -16,7 +16,7 @@ html, body {
 body {
     font-family: "Nunito", sans-serif;
     text-align: center;
-    background: rgba(235, 235, 235, 0.9);
+    background: rgba(51, 29, 148, 0.9);
 }
 
 header {
@@ -30,7 +30,7 @@ header {
 
 header h1 {
     font-size: 1.25em;
-    color: rgba(50, 50, 50, 0.9);
+    color: rgba(245, 245, 245, 0.9);
     margin-top: 35px;
 }
 
@@ -83,8 +83,8 @@ header h1 {
     flex-wrap: nowrap;
     justify-content: flex-start;
     cursor: pointer;
-    width: 100%;
-    max-width: 360px;
+    width: 380px;
+    max-width: 380px;
     margin: 10px 10px 20px;
     padding: 10px;
     background: rgba(245, 245, 245, 0.9);
@@ -117,6 +117,11 @@ header h1 {
 
 .cap {
     text-transform: capitalize;
+}
+
+.no-results {
+    font-size: 2.0em;
+    color: rgba(245, 245, 245, 0.9);
 }
 
 
